@@ -1,0 +1,33 @@
+{
+  "name": "api-console-github-resolver",
+  "version": "0.1.0",
+  "description": "Gets information about Mulesoft's API console release.",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha 'test/*.test.js' --reporter spec"
+  },
+  "engines": {
+    "node": ">=6.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mulesoft-labs/api-console-github-resolver.git"
+  },
+  "keywords": [
+    "api-console",
+    "builder",
+    "node",
+    "github",
+    "release"
+  ],
+  "author": "Pawel Psztyc, Advanced Rest Client Authors",
+  "license": "Apache-2.0 or CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/mulesoft-labs/api-console-github-resolver/issues"
+  },
+  "homepage": "https://github.com/mulesoft-labs/api-console-github-resolver#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
