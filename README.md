@@ -1,5 +1,7 @@
 # api-console-github-resolver
 
+https://travis-ci.org/advanced-rest-client/api-console-github-resolver.svg?branch=master
+
 A npm module to get information about Mulesoft's API console release.
 
 This module is mainly used in the [api-console-builder](https://github.com/mulesoft-labs/api-console-builder).
