@@ -5,7 +5,7 @@ const assert = require('chai').assert;
 
 function getHeaders(extra) {
   const token = process.env.GITHUB_TOKEN;
-  var headers = {
+  let headers = {
     'user-agent': 'mulesoft-labs/api-console-github-resolver'
   };
   if (token) {
@@ -23,8 +23,8 @@ describe('Transport library', () => {
     const headers = getHeaders({
       'accept': 'application/vnd.github.loki-preview+json'
     });
-    var transport;
-    var json;
+    let transport;
+    let json;
 
     before(function() {
       transport = new Transport();
@@ -50,8 +50,8 @@ describe('Transport library', () => {
   describe('get() Buffer', () => {
     const zipUrl = 'https://api.github.com/repos/mulesoft/api-console/zipball/v4.0.0';
     const headers = getHeaders();
-    var transport;
-    var response;
+    let transport;
+    let response;
 
     before(function() {
       this.timeout(20000);

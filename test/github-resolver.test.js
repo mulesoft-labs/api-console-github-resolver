@@ -5,7 +5,7 @@ const {GithubResolverOptions} = require('../lib/github-resolver-options.js');
 const assert = require('chai').assert;
 
 function getResolverOptions(minimumTagMajor) {
-  var token = process.env.GITHUB_TOKEN;
+  const token = process.env.GITHUB_TOKEN;
   return new GithubResolverOptions({
     token: token,
     minimumTagMajor: minimumTagMajor
@@ -15,7 +15,7 @@ function getResolverOptions(minimumTagMajor) {
 //jscs:disable
 describe('GitHub resolver', () => {
   describe('basics', () => {
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
@@ -30,7 +30,7 @@ describe('GitHub resolver', () => {
   });
 
   describe('_assertTag()', () => {
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
@@ -175,8 +175,8 @@ describe('GitHub resolver', () => {
   });
 
   describe('getReleasesList()', () => {
-    var resolver;
-    var response;
+    let resolver;
+    let response;
     before(function() {
       resolver = new GithubResolver(getResolverOptions(4));
       return resolver.getReleasesList()
@@ -207,8 +207,8 @@ describe('GitHub resolver', () => {
   });
 
   describe('getTagInfo()', () => {
-    var resolver;
-    var response;
+    let resolver;
+    let response;
     before(function() {
       resolver = new GithubResolver(getResolverOptions(4));
       return resolver.getTagInfo('v4.0.0')
@@ -235,7 +235,7 @@ describe('GitHub resolver', () => {
   });
 
   describe('getTagInfo() error', () => {
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
