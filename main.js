@@ -18,7 +18,7 @@ const {GithubResolverOptions} = require('./lib/github-resolver-options.js');
  * @return {GithubResolverOptions} Options object.
  */
 function getResolverOptions() {
-  var token = process.env.GITHUB_TOKEN;
+  const token = process.env.GITHUB_TOKEN;
   return new GithubResolverOptions({
     token: token
   });
