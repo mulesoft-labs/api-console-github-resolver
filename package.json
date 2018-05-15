@@ -1,6 +1,6 @@
 {
   "name": "api-console-github-resolver",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Gets information about Mulesoft's API console releases.",
   "main": "main.js",
   "scripts": {
