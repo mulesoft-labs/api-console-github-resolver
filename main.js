@@ -18,7 +18,7 @@ const {GithubResolverOptions} = require('./lib/github-resolver-options.js');
  * @return {GithubResolverOptions} Options object.
  */
 function getResolverOptions() {
-  var token = process.env.GITHUB_TOKEN;
+  const token = process.env.GITHUB_TOKEN;
   return new GithubResolverOptions({
     token: token
   });
@@ -47,6 +47,7 @@ module.exports.tagInfo = function(tag) {
 /**
  * Sorthand function to `GithubResolver#getReleasesList()`.
  *
+ * @param {String} tag Tag name
  * @return {Promise} Promise resolves to an array of releases information.
  */
 module.exports.releasesInfo = function(tag) {

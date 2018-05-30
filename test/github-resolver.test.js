@@ -3,18 +3,20 @@
 const {GithubResolver} = require('../lib/github-resolver.js');
 const {GithubResolverOptions} = require('../lib/github-resolver-options.js');
 const assert = require('chai').assert;
+const fs = require('fs-extra');
 
-function getResolverOptions() {
-  var token = process.env.GITHUB_TOKEN;
+function getResolverOptions(minimumTagMajor) {
+  const token = process.env.GITHUB_TOKEN;
   return new GithubResolverOptions({
-    token: token
+    token: token,
+    minimumTagMajor: minimumTagMajor
   });
 }
 
-//jscs:disable
+// jscs:disable
 describe('GitHub resolver', () => {
   describe('basics', () => {
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
@@ -29,42 +31,42 @@ describe('GitHub resolver', () => {
   });
 
   describe('_assertTag()', () => {
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
 
-    it('do not throws error for 4.0.0', function() {
-      resolver._assertTag('4.0.0');
+    it('do not throws error for 5.0.0', function() {
+      resolver._assertTag('5.0.0');
     });
 
-    it('do not throws error for 4.1.0', function() {
-      resolver._assertTag('4.1.0');
+    it('do not throws error for 5.1.0', function() {
+      resolver._assertTag('5.1.0');
     });
 
-    it('do not throws error for 4.1.1', function() {
-      resolver._assertTag('4.1.1');
+    it('do not throws error for 5.1.1', function() {
+      resolver._assertTag('5.1.1');
     });
 
-    it('do not throws error for v4.0.1', function() {
-      resolver._assertTag('v4.0.1');
+    it('do not throws error for v5.0.1', function() {
+      resolver._assertTag('v5.0.1');
     });
 
-    it('throws for version lower than 4.0.0', function() {
+    it('throws for version lower than 5.0.0', function() {
       assert.throws(function() {
-        resolver._assertTag('3.0.0');
+        resolver._assertTag('4.0.0');
       });
     });
 
-    it('throws for version lower than v4.0.0', function() {
+    it('throws for version lower than v5.0.0', function() {
       assert.throws(function() {
-        resolver._assertTag('v3.0.0');
+        resolver._assertTag('v4.0.0');
       });
     });
   });
 
   describe('_filterSupportedTags()', () => {
-    var list = [{
+    const list = [{
       tag_name: '2.0.0'
     }, {
       tag_name: 'v2.0.0'
@@ -83,20 +85,20 @@ describe('GitHub resolver', () => {
       tag_name: 'v4.2.0'
     }];
 
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
 
     it('Should filter preleases', function() {
-      var result = resolver._filterSupportedTags(list);
-      var item = result.find(item => item.prerelease);
+      const result = resolver._filterSupportedTags(list);
+      const item = result.find((item) => item.prerelease);
       assert.notOk(item);
     });
 
     it('Should filter out versions lower than major 4', function() {
-      var result = resolver._filterSupportedTags(list);
-      var item = result.find(item => (item.tag_name.indexOf('v2') !== -1 &&
+      const result = resolver._filterSupportedTags(list);
+      const item = result.find((item) => (item.tag_name.indexOf('v2') !== -1 &&
         item.tag_name.indexOf('v3') !== -1 &&
         item.tag_name.indexOf('v3') !== -1 && item.tag_name.indexOf('3') !== -1));
       assert.notOk(item);
@@ -104,7 +106,7 @@ describe('GitHub resolver', () => {
   });
 
   describe('_sortTags()', () => {
-    var list = [{
+    const list = [{
       tag_name: '2.0.0'
     }, {
       tag_name: 'v2.0.1'
@@ -123,7 +125,7 @@ describe('GitHub resolver', () => {
       tag_name: 'v4.2.0'
     }];
 
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
@@ -142,15 +144,15 @@ describe('GitHub resolver', () => {
   });
 
   describe('getLatestInfo()', () => {
-    var resolver;
-    var response;
+    let resolver;
+    let response;
     before(function() {
-      resolver = new GithubResolver(getResolverOptions());
+      resolver = new GithubResolver(getResolverOptions(4));
       return resolver.getLatestInfo()
       .then((res) => {
         response = res;
       })
-      .catch(cause => {
+      .catch((cause) => {
         console.log(cause.message);
         throw cause;
       });
@@ -174,10 +176,10 @@ describe('GitHub resolver', () => {
   });
 
   describe('getReleasesList()', () => {
-    var resolver;
-    var response;
+    let resolver;
+    let response;
     before(function() {
-      resolver = new GithubResolver(getResolverOptions());
+      resolver = new GithubResolver(getResolverOptions(4));
       return resolver.getReleasesList()
       .then((res) => {
         response = res;
@@ -203,13 +205,24 @@ describe('GitHub resolver', () => {
       assert.ok(response[0].tag_name);
       // jscs: enable
     });
+
+    it('Adds entry in cache file', () => {
+      const cacheFile = resolver._cache.cacheLocation;
+      return fs.readJson(cacheFile)
+      .then((data) => {
+        const releaseUrl = 'https://api.github.com/repos/mulesoft/api-console/releases';
+        const result = data[releaseUrl];
+        assert.typeOf(result.etag, 'string');
+        assert.typeOf(result.response, 'array');
+      });
+    });
   });
 
   describe('getTagInfo()', () => {
-    var resolver;
-    var response;
+    let resolver;
+    let response;
     before(function() {
-      resolver = new GithubResolver(getResolverOptions());
+      resolver = new GithubResolver(getResolverOptions(4));
       return resolver.getTagInfo('v4.0.0')
       .then((res) => {
         response = res;
@@ -231,10 +244,21 @@ describe('GitHub resolver', () => {
       assert.ok(response.tag_name);
       // jscs: enable
     });
+
+    it('Adds entry in cache file', () => {
+      const cacheFile = resolver._cache.cacheLocation;
+      return fs.readJson(cacheFile)
+      .then((data) => {
+        const releaseUrl = 'https://api.github.com/repos/mulesoft/api-console/releases/tags/v4.0.0';
+        const result = data[releaseUrl];
+        assert.typeOf(result.etag, 'string');
+        assert.typeOf(result.response, 'object');
+      });
+    });
   });
 
   describe('getTagInfo() error', () => {
-    var resolver;
+    let resolver;
     before(function() {
       resolver = new GithubResolver(getResolverOptions());
     });
