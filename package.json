@@ -28,7 +28,8 @@
   "homepage": "https://github.com/mulesoft-labs/api-console-github-resolver#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "sinon": "^5.0.10"
   },
   "dependencies": {
     "fs-extra": "^6.0.1"

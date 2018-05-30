@@ -3,6 +3,7 @@
 const {GithubResolver} = require('../lib/github-resolver.js');
 const {GithubResolverOptions} = require('../lib/github-resolver-options.js');
 const assert = require('chai').assert;
+const fs = require('fs-extra');
 
 function getResolverOptions(minimumTagMajor) {
   const token = process.env.GITHUB_TOKEN;
@@ -12,7 +13,7 @@ function getResolverOptions(minimumTagMajor) {
   });
 }
 
-//jscs:disable
+// jscs:disable
 describe('GitHub resolver', () => {
   describe('basics', () => {
     let resolver;
@@ -204,6 +205,17 @@ describe('GitHub resolver', () => {
       assert.ok(response[0].tag_name);
       // jscs: enable
     });
+
+    it('Adds entry in cache file', () => {
+      const cacheFile = resolver._cache.cacheLocation;
+      return fs.readJson(cacheFile)
+      .then((data) => {
+        const releaseUrl = 'https://api.github.com/repos/mulesoft/api-console/releases';
+        const result = data[releaseUrl];
+        assert.typeOf(result.etag, 'string');
+        assert.typeOf(result.response, 'array');
+      });
+    });
   });
 
   describe('getTagInfo()', () => {
@@ -231,6 +243,17 @@ describe('GitHub resolver', () => {
       // jscs: disable
       assert.ok(response.tag_name);
       // jscs: enable
+    });
+
+    it('Adds entry in cache file', () => {
+      const cacheFile = resolver._cache.cacheLocation;
+      return fs.readJson(cacheFile)
+      .then((data) => {
+        const releaseUrl = 'https://api.github.com/repos/mulesoft/api-console/releases/tags/v4.0.0';
+        const result = data[releaseUrl];
+        assert.typeOf(result.etag, 'string');
+        assert.typeOf(result.response, 'object');
+      });
     });
   });
 

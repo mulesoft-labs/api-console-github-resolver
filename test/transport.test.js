@@ -29,7 +29,7 @@ describe('Transport library', () => {
     before(function() {
       transport = new Transport();
       return transport.get(jsonUrl, headers)
-      .then(response => {
+      .then((response) => {
         json = response;
       });
     });

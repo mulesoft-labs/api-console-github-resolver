@@ -47,6 +47,7 @@ module.exports.tagInfo = function(tag) {
 /**
  * Sorthand function to `GithubResolver#getReleasesList()`.
  *
+ * @param {String} tag Tag name
  * @return {Promise} Promise resolves to an array of releases information.
  */
 module.exports.releasesInfo = function(tag) {
