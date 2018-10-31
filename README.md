@@ -1,6 +1,12 @@
 # api-console-github-resolver
 
-https://travis-ci.org/advanced-rest-client/api-console-github-resolver.svg?branch=master
+**PACKAGE MOVED**
+
+Moved to: https://www.npmjs.com/package/@api-components/api-console-github-resolver
+
+Do not use this version in new projects.
+
+[![Build Status](https://travis-ci.org/advanced-rest-client/multipart-payload-editor.svg?branch=stage)](https://travis-ci.org/mulesoft-labs/api-console-github-resolver)
 
 A npm module to get information about Mulesoft's API console release.
 
