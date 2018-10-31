@@ -1,5 +1,5 @@
 {
-  "name": "api-console-github-resolver",
+  "name": "@api-components/api-console-github-resolver",
   "version": "1.0.1",
   "description": "Gets information about Mulesoft's API console releases.",
   "main": "main.js",
