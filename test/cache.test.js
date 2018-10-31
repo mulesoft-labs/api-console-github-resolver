@@ -4,12 +4,13 @@ const {GithubCache} = require('../lib/github-cache.js');
 const assert = require('chai').assert;
 const fs = require('fs-extra');
 const path = require('path');
+const logger = require('./logger.js');
 
 describe('Resolver cache', () => {
   describe('locateAppDir()', () => {
     let cache;
     before(function() {
-      cache = new GithubCache();
+      cache = new GithubCache(logger);
     });
 
     it('Sets cacheFolder property', () => {
@@ -30,11 +31,11 @@ describe('Resolver cache', () => {
   describe('loadCache()', () => {
     let cache;
     beforeEach(function() {
-      cache = new GithubCache();
+      cache = new GithubCache(logger);
     });
 
     before(() => {
-      const cache = new GithubCache();
+      const cache = new GithubCache(logger);
       return fs.remove(cache.cacheFolder)
       .then(() => {
         return fs.outputJson(cache.cacheLocation, {test: true});
@@ -74,7 +75,7 @@ describe('Resolver cache', () => {
     const url = 'https://test.domain.com';
     const etag = 'test-etag';
     beforeEach(function() {
-      cache = new GithubCache();
+      cache = new GithubCache(logger);
       const data = {};
       data[url] = {
         etag
@@ -116,7 +117,7 @@ describe('Resolver cache', () => {
     const url = 'https://test.domain.com';
     const response = 'test-response';
     beforeEach(function() {
-      cache = new GithubCache();
+      cache = new GithubCache(logger);
       const data = {};
       data[url] = {
         response
@@ -158,11 +159,11 @@ describe('Resolver cache', () => {
     const url = 'https://test.domain.com';
     const etag = 'test-etag';
     before(() => {
-      const cache = new GithubCache();
+      const cache = new GithubCache(logger);
       return fs.remove(cache.cacheFolder);
     });
     beforeEach(function() {
-      cache = new GithubCache();
+      cache = new GithubCache(logger);
     });
     afterEach(() => {
       return fs.remove(cache.cacheFolder);

@@ -15,43 +15,48 @@ const {GithubResolverOptions} = require('./lib/github-resolver-options.js');
  * It discovers `GITHUB_TOKEN` variable and if set it uses it to authorize the
  * request.
  *
+ * @param {?Object} logger A logger to use.
  * @return {GithubResolverOptions} Options object.
  */
-function getResolverOptions() {
+function getResolverOptions(logger) {
   const token = process.env.GITHUB_TOKEN;
   return new GithubResolverOptions({
-    token: token
+    token: token,
+    logger
   });
 }
 
 /**
  * Sorthand function to `GithubResolver#getLatestInfo()`.
  *
+ * @param {?Object} logger A logger to use.
  * @return {Promise<Object>} A promise that resolves to a GitHub release info
  * object.
  */
-module.exports.latestInfo = function() {
-  const resolver = new GithubResolver(getResolverOptions());
+module.exports.latestInfo = function(logger) {
+  const resolver = new GithubResolver(getResolverOptions(logger));
   return resolver.getLatestInfo();
 };
 /**
  * Sorthand function to `GithubResolver#getTagInfo()`.
  *
  * @param {String} tag Release tag name
+ * @param {?Object} logger A logger to use.
  * @return {Promise} Resolved promise with an `Object` with release information.
  */
-module.exports.tagInfo = function(tag) {
-  const resolver = new GithubResolver(getResolverOptions());
+module.exports.tagInfo = function(tag, logger) {
+  const resolver = new GithubResolver(getResolverOptions(logger));
   return resolver.getTagInfo(tag);
 };
 /**
  * Sorthand function to `GithubResolver#getReleasesList()`.
  *
  * @param {String} tag Tag name
+ * @param {?Object} logger A logger to use.
  * @return {Promise} Promise resolves to an array of releases information.
  */
-module.exports.releasesInfo = function(tag) {
-  const resolver = new GithubResolver(getResolverOptions());
+module.exports.releasesInfo = function(tag, logger) {
+  const resolver = new GithubResolver(getResolverOptions(logger));
   return resolver.getReleasesList(tag);
 };
 /**

@@ -2,6 +2,7 @@
 
 const {Transport} = require('../lib/transport.js');
 const assert = require('chai').assert;
+const logger = require('./logger.js');
 
 function getHeaders(extra) {
   const token = process.env.GITHUB_TOKEN;
@@ -27,7 +28,7 @@ describe('Transport library', () => {
     let json;
 
     before(function() {
-      transport = new Transport();
+      transport = new Transport(logger);
       return transport.get(jsonUrl, headers)
       .then((response) => {
         json = response;
@@ -55,7 +56,7 @@ describe('Transport library', () => {
 
     before(function() {
       this.timeout(20000);
-      transport = new Transport();
+      transport = new Transport(logger);
       return transport.get(zipUrl, headers)
       .then((res) => {
         response = res;
