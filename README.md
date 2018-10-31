@@ -1,24 +1,18 @@
 # api-console-github-resolver
 
-**PACKAGE MOVED**
-
-Moved to: https://www.npmjs.com/package/@api-components/api-console-github-resolver
-
-Do not use this version in new projects.
-
-[![Build Status](https://travis-ci.org/advanced-rest-client/multipart-payload-editor.svg?branch=stage)](https://travis-ci.org/mulesoft-labs/api-console-github-resolver)
+[![Build Status](https://travis-ci.org/mulesoft-labs/api-console-github-resolver.svg?branch=master)](https://travis-ci.org/mulesoft-labs/api-console-github-resolver)
 
 A npm module to get information about Mulesoft's API console release.
 
-This module is mainly used in the [api-console-builder](https://github.com/mulesoft-labs/api-console-builder).
+This module is mainly used in the [@api-components/api-console-builder](https://github.com/mulesoft-labs/api-console-builder).
 
 ## API
 
 Shorthand functions:
 
--   `latestInfo()` -> `new ApiConsoleGithubResolver#getLatestInfo()`
--   `tagInfo(tag)` -> `new ApiConsoleGithubResolver#getTagInfo(tag)`
--   `releasesInfo()` -> `new ApiConsoleGithubResolver#getReleasesList()`
+-   `latestInfo([logger])` -> `new ApiConsoleGithubResolver#getLatestInfo()`
+-   `tagInfo(tag, [logger])` -> `new ApiConsoleGithubResolver#getTagInfo(tag)`
+-   `releasesInfo([logger])` -> `new ApiConsoleGithubResolver#getReleasesList()`
 
 The module exposes 2 classes:
 
@@ -30,7 +24,7 @@ The module exposes 2 classes:
 ```javascript
 const resolver = require('api-console-github-resolver');
 
-resolver.latestInfo()
+resolver.latestInfo([winstonLogger])
 .then(info => console.log(info))
 .catch(cause => console.error(cause));
 ```
@@ -40,7 +34,9 @@ equivalent to
 ```javascript
 const {ApiConsoleGithubResolver} = require('api-console-github-resolver');
 
-const resolver = new ApiConsoleGithubResolver();
+const resolver = new ApiConsoleGithubResolver({
+  logger: winstonLogger
+});
 resolver.getLatestInfo()
 .then(info => console.log(info))
 .catch(cause => console.error(cause));
@@ -63,6 +59,17 @@ Gets a resource from given location. This function fallows redirects.
 
 A promise resolved to a JavaScript `Object` if compatible content type is detected
 or to `Buffer` otherwise.
+
+#### Example
+
+```javascript
+const {ApiConsoleTransport} = require('api-console-github-resolver');
+const winston = require('winston');
+const transport = new ApiConsoleTransport(createLogger(winston));
+transport.get('https://...', {'etag': 'abc'})
+.then((response) => console.log(response))
+.catch((cause) => console.error(response));
+```
 
 ### ApiConsoleGithubResolver
 
