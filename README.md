@@ -10,9 +10,9 @@ This module is mainly used in the [@api-components/api-console-builder](https://
 
 Shorthand functions:
 
--   `latestInfo([logger])` -> `new ApiConsoleGithubResolver#getLatestInfo()`
--   `tagInfo(tag, [logger])` -> `new ApiConsoleGithubResolver#getTagInfo(tag)`
--   `releasesInfo([logger])` -> `new ApiConsoleGithubResolver#getReleasesList()`
+-   `latestInfo(logger)` -> `new ApiConsoleGithubResolver#getLatestInfo()`
+-   `tagInfo(tag, logger)` -> `new ApiConsoleGithubResolver#getTagInfo(tag)`
+-   `releasesInfo(logger)` -> `new ApiConsoleGithubResolver#getReleasesList()`
 
 The module exposes 2 classes:
 
@@ -24,7 +24,7 @@ The module exposes 2 classes:
 ```javascript
 const resolver = require('api-console-github-resolver');
 
-resolver.latestInfo([winstonLogger])
+resolver.latestInfo(winstonLogger)
 .then(info => console.log(info))
 .catch(cause => console.error(cause));
 ```
