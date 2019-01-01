@@ -19,6 +19,82 @@ function getHeaders(extra) {
 }
 
 describe('Transport library', () => {
+  describe('_optionsForUrl()', () => {
+    let instance;
+    before(function() {
+      instance = new Transport(logger);
+    });
+
+    it('Returns an object', () => {
+      const result = instance._optionsForUrl('https://domain.com');
+      assert.typeOf(result, 'object');
+    });
+
+    it('Returns host name', () => {
+      const result = instance._optionsForUrl('https://domain.com');
+      assert.equal(result.hostname, 'domain.com');
+    });
+
+    it('Returns path value', () => {
+      const result = instance._optionsForUrl('https://domain.com/a/b/c');
+      assert.equal(result.path, '/a/b/c');
+    });
+
+    it('Returns headers if set', () => {
+      const headers = {};
+      const result = instance._optionsForUrl('https://domain.com/', headers);
+      assert.isTrue(result.headers === headers);
+    });
+
+    it('Headers are undefined when not set', () => {
+      const result = instance._optionsForUrl('https://domain.com/');
+      assert.isUndefined(result.headers);
+    });
+  });
+
+  describe('_processResponse()', () => {
+    let instance;
+    before(function() {
+      instance = new Transport(logger);
+    });
+
+    it('Returns undefined if no argument', () => {
+      const result = instance._processResponse();
+      assert.isUndefined(result);
+    });
+
+    it('Returns unchanged response when no content type', () => {
+      instance.latestHeaders = {};
+      const result = instance._processResponse('test');
+      assert.equal(result, 'test');
+    });
+
+    it('Parses JSON response', () => {
+      instance.latestHeaders = {
+        'content-type': 'application/json'
+      };
+      const result = instance._processResponse('{"test": true}');
+      assert.deepEqual(result, {'test': true});
+    });
+
+    it('Throws when response is invalid', () => {
+      instance.latestHeaders = {
+        'content-type': 'application/json'
+      };
+      assert.throws(() => {
+        instance._processResponse('{test: true}');
+      });
+    });
+
+    it('Returns unchanged response for other media types', () => {
+      instance.latestHeaders = {
+        'content-type': 'application/xml'
+      };
+      const result = instance._processResponse('test');
+      assert.equal(result, 'test');
+    });
+  });
+
   describe('get() JSON', () => {
     const jsonUrl = 'https://api.github.com/repos/mulesoft/api-console/releases';
     const headers = getHeaders({
