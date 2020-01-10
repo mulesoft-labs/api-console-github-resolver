@@ -1,8 +1,9 @@
-'use strict';
+import { Transport } from './lib/Transport.js';
+import { GithubResolver } from './lib/GithubResolver.js';
+import { GithubResolverOptions } from './lib/GithubResolverOptions.js';
+import { GithubCache } from './lib/GithubCache.js';
 
-const {Transport} = require('./lib/transport.js');
-const {GithubResolver} = require('./lib/github-resolver.js');
-const {GithubResolverOptions} = require('./lib/github-resolver-options.js');
+export { Transport, GithubResolver, GithubResolverOptions, GithubCache };
 
 /**
  * Copyright (C) Mulesoft.
@@ -21,7 +22,7 @@ const {GithubResolverOptions} = require('./lib/github-resolver-options.js');
 function getResolverOptions(logger) {
   const token = process.env.GITHUB_TOKEN;
   return new GithubResolverOptions({
-    token: token,
+    token,
     logger
   });
 }
@@ -33,9 +34,9 @@ function getResolverOptions(logger) {
  * @return {Promise<Object>} A promise that resolves to a GitHub release info
  * object.
  */
-module.exports.latestInfo = function(logger) {
+export const latestInfo = async function(logger) {
   const resolver = new GithubResolver(getResolverOptions(logger));
-  return resolver.getLatestInfo();
+  return await resolver.getLatestInfo();
 };
 /**
  * Sorthand function to `GithubResolver#getTagInfo()`.
@@ -44,30 +45,17 @@ module.exports.latestInfo = function(logger) {
  * @param {?Object} logger A logger to use.
  * @return {Promise} Resolved promise with an `Object` with release information.
  */
-module.exports.tagInfo = function(tag, logger) {
+export const tagInfo = async function(tag, logger) {
   const resolver = new GithubResolver(getResolverOptions(logger));
-  return resolver.getTagInfo(tag);
+  return await resolver.getTagInfo(tag);
 };
 /**
  * Sorthand function to `GithubResolver#getReleasesList()`.
  *
- * @param {String} tag Tag name
  * @param {?Object} logger A logger to use.
  * @return {Promise} Promise resolves to an array of releases information.
  */
-module.exports.releasesInfo = function(tag, logger) {
+export const releasesInfo = async function(logger) {
   const resolver = new GithubResolver(getResolverOptions(logger));
-  return resolver.getReleasesList(tag);
+  return await resolver.getReleasesList();
 };
-/**
- * A library to get a resource from a secured location.
- */
-module.exports.ApiConsoleTransport = Transport;
-/**
- * A library to get an information about API console release from GitHub.
- */
-module.exports.ApiConsoleGithubResolver = GithubResolver;
-/**
- * Options object for the `ApiConsoleGithubResolver`
- */
-module.exports.ApiConsoleGithubResolverOptions = GithubResolverOptions;

@@ -1,8 +1,6 @@
-'use strict';
-
-const {GithubResolver} = require('../lib/github-resolver.js');
-const {GithubResolverOptions} = require('../lib/github-resolver-options.js');
-const assert = require('chai').assert;
+const { GithubResolver } = require('../');
+const { GithubResolverOptions } = require('../');
+const { assert } = require('chai');
 const logger = require('./logger.js');
 const fs = require('fs-extra');
 
@@ -484,8 +482,7 @@ describe('GitHub resolver', () => {
     });
   });
 
-  // Until firsxt stable release this tests won't work
-  describe.skip('getLatestInfo() - version 5', () => {
+  describe('getLatestInfo() - version 5', () => {
     let resolver;
     let response;
     before(function() {
@@ -579,8 +576,7 @@ describe('GitHub resolver', () => {
     });
   });
 
-  // Until firsxt stable release this tests won't work
-  describe.skip('getReleasesList() - version 5', () => {
+  describe('getReleasesList() - version 5', () => {
     let resolver;
     let response;
     before(function() {

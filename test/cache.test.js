@@ -1,7 +1,5 @@
-'use strict';
-
-const {GithubCache} = require('../lib/github-cache.js');
-const assert = require('chai').assert;
+const { GithubCache } = require('../');
+const { assert } = require('chai');
 const fs = require('fs-extra');
 const path = require('path');
 const logger = require('./logger.js');

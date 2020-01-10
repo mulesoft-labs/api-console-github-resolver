@@ -1,7 +1,5 @@
-'use strict';
-
-const {Transport} = require('../lib/transport.js');
-const assert = require('chai').assert;
+const { Transport } = require('../');
+const { assert } = require('chai');
 const logger = require('./logger.js');
 
 function getHeaders(extra) {
