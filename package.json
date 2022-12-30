@@ -30,7 +30,7 @@
   "homepage": "https://github.com/mulesoft-labs/api-console-github-resolver#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.0.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.0.0",
     "sinon": "^8.0.4",
     "@advanced-rest-client/eslint-config": "^1.1.4",
